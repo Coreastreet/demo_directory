@@ -9,13 +9,13 @@ import lombok.extern.slf4j.Slf4j;;
 
 import java.util.List;
 @Slf4j
-@CrossOrigin(origins = "*")
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/tasks")
 public class TaskController {
     @Autowired
     private TaskService taskService;
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<Task>> getAllTasks() {
         return ResponseEntity.ok(taskService.getAllTask());
     }
@@ -30,7 +30,7 @@ public class TaskController {
     }
     @PostMapping("/")
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
-        return ResponseEntity.ok(taskService.createNewTask(task));
+        return ResponseEntity.ok(taskService.createTask(task));
     }
     @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task) {
@@ -38,7 +38,7 @@ public class TaskController {
         return ResponseEntity.ok(taskService.updateTask(task));
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> getAllTasks(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(taskService.findTaskById(id));
         return ResponseEntity.ok(true);
     }

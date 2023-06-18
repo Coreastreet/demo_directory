@@ -12,7 +12,7 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public Task createNewTask(Task task) {
+    public Task createTask(Task task) {
         return taskRepository.save(task);
     }
 
@@ -36,8 +36,15 @@ public class TaskService {
         taskRepository.delete(task);
     }
 
+    public void deleteAllTasks() {
+        taskRepository.deleteAll();
+    }
+
     public Task updateTask(Task task) {
         return taskRepository.save(task);
     }
 
+    //public void resetTaskSequenceId() {
+    //    taskRepository.resetTaskSequence();
+    //}
 }

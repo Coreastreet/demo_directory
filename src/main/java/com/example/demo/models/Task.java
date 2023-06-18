@@ -1,26 +1,38 @@
 package com.example.demo.models;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @NoArgsConstructor
 @AllArgsConstructor
+//@JsonIgnore
 @Builder
 @Table(name="tasks")
 @Entity
 
 public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="task_sequence_generator")
+    @SequenceGenerator(name = "task_sequence_generator", allocationSize = 1)
+    @Getter
+    @Setter
     private Long id;
     private String taskName;
     private boolean completed;
+    @JsonIgnore
+    @Getter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "task_folder_id", referencedColumnName = "id")
+    private TaskFolder taskFolder;
 
-    public Task(String taskName, boolean completed) {
+    public Task(String taskName, boolean completed, TaskFolder taskFolder) {
         this.taskName = taskName;
         this.completed = completed;
+        this.taskFolder = taskFolder;
     }
 
     public Long getId() {
@@ -41,4 +53,12 @@ public class Task {
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
+
+    @Override
+    public String toString() {
+        return "Task [id=" + getId() + ", taskName=" + getTask()
+                + ", completed=" + isCompleted()
+                + ", task_folder=" + getTaskFolder() + "]";
+    }
+
 }
